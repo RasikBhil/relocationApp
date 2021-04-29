@@ -16,6 +16,7 @@ const Navigator = () => {
             backgroundColor: colors.gray,
           },
           headerTintColor: colors.black,
+          headerBackTitleVisible: false,
         }}>
         <Stack.Screen
           name={routes.HOME_SCREEN}
