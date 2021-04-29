@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {ScrollView, Alert} from 'react-native';
+import {
+  ScrollView,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import {useIsFocused} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Box} from '../../components';
@@ -34,11 +41,12 @@ const Home = () => {
       setMobile('');
       setEmail('');
       setPassword('');
+      setIsEdit(false);
     }
   }, [isFocused]);
 
   const OnPress = async () => {
-    if (!(name && mobile && email && password)) {
+    if (!(name && address && mobile && email && password)) {
       Alert.alert('please Require All field!');
       return;
     }
@@ -60,6 +68,7 @@ const Home = () => {
     setName(name);
   };
   const onChangeAddress = addr => {
+    console.log('addr::', addr);
     setAddress(addr?.description);
   };
   const onChangeMobile = mob => {
@@ -72,9 +81,14 @@ const Home = () => {
     setPassword(pwd);
   };
 
-  const onPressEdit = (name, value) => {
+  const onPressEdit = async (name, value) => {
+    console.log('EDIT::', name, 'value::', value);
     try {
-      dispatch(addUserProfile({...profileData, [name]: value}));
+      const res = await dispatch(
+        addUserProfile({...profileData, [name]: value}),
+      );
+      console.log('RES::', res);
+      res && Alert.alert('Edit Successfuly!');
     } catch (e) {
       console.log('ERROR::', e);
     }
@@ -82,23 +96,29 @@ const Home = () => {
 
   return (
     <Box style={{backgroundColor: colors.white, flex: 1}}>
-      <ScrollView>
-        <Form
-          OnPress={OnPress}
-          onChangeName={onChangeName}
-          onChangeAddress={onChangeAddress}
-          onChangeMobile={onChangeMobile}
-          onChangeEmail={onChangeEmail}
-          onChangePassword={onChangePassword}
-          name={name}
-          address={address}
-          email={email}
-          password={password}
-          mobile={mobile}
-          isEdit={isEdit}
-          onPressEdit={onPressEdit}
-        />
-      </ScrollView>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: Platform.OS === 'ios' ? 1 : 1}}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <Box style={{flex: 1}}>
+            <Form
+              OnPress={OnPress}
+              onChangeName={onChangeName}
+              onChangeAddress={onChangeAddress}
+              onChangeMobile={onChangeMobile}
+              onChangeEmail={onChangeEmail}
+              onChangePassword={onChangePassword}
+              name={name}
+              address={address}
+              email={email}
+              password={password}
+              mobile={mobile}
+              isEdit={isEdit}
+              onPressEdit={onPressEdit}
+            />
+          </Box>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </Box>
   );
 };

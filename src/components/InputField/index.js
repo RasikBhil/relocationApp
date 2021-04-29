@@ -20,7 +20,7 @@ const InputField = props => {
 export default InputField;
 const styles = StyleSheet.create({
   input: {
-    height: ms(40),
+    // height: ms(40),
     marginVertical: ms(10),
     // borderBottomWidth: ms(1),
     // borderBottomColor: colors.gray,

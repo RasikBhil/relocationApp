@@ -66,11 +66,13 @@ const Form = props => {
           }}
         />
         {isEdit && (
-          <Image
-            source={ic_edit}
-            style={styles.imageStyle}
-            onPressEdit={() => onPressEdit('addr', address)}
-          />
+          <TouchableOpacity onPress={onPressEdit}>
+            <Image
+              source={ic_edit}
+              style={styles.imageStyle}
+              onPressEdit={() => onPressEdit('addr', address)}
+            />
+          </TouchableOpacity>
         )}
       </Box>
       <InputBox
@@ -151,15 +153,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-    height: ms(40),
+    // height: ms(40),
     marginVertical: ms(10),
     marginHorizontal: ms(10),
     borderBottomWidth: ms(0.5),
     borderBottomColor: colors.gray,
   },
   imageStyle: {
-    padding: ms(10),
-    margin: ms(5),
+    // padding: ms(10),
+    // margin: ms(5),
     height: ms(25),
     width: ms(25),
     resizeMode: 'contain',
