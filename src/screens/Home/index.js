@@ -1,19 +1,12 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Alert} from 'react-native';
-import {useIsFocused} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Box, Wrapper} from '../../components';
+import {Box} from '../../components';
 import {addUserProfile} from '../../store/actions';
 import Form from './widget/Form';
 import {colors} from '../../../theme';
 const Home = () => {
-  const nameRef = useRef(null);
-  const addrRef = useRef(null);
-  const mobileRef = useRef(null);
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
   const dispatch = useDispatch();
-  const isFocused = useIsFocused();
   const profileData = useSelector(
     ({app: {userProfileData}}) => userProfileData,
   );
@@ -33,7 +26,7 @@ const Home = () => {
   const [editKey, setEditKey] = useState('');
   const [isEdit, setIsEdit] = useState(false);
   const [isSubmitted, setSubmitted] = useState(false);
-  //
+
   useEffect(() => {
     setName('');
     setAddress('');
@@ -45,9 +38,9 @@ const Home = () => {
     setEditKey('');
   }, []);
 
-  const OnPress = async () => {
+  const onPress = async () => {
     if (!(name && address && mobile && email && password)) {
-      Alert.alert('please Require All field!');
+      Alert.alert('Require All field!');
       return;
     }
     try {
@@ -67,11 +60,9 @@ const Home = () => {
     }
   };
   const onChangeName = name => {
-    console.log('REF::', nameRef);
     setName(name);
   };
   const onChangeAddress = addr => {
-    console.log('addr::', addr);
     setAddress(addr?.description);
   };
   const onChangeMobile = mob => {
@@ -83,25 +74,10 @@ const Home = () => {
   const onChangePassword = pwd => {
     setPassword(pwd);
   };
-
-  const onPressEdit = async (name, value) => {
-    console.log('EDIT::', name, 'value::', value);
+  const onPressEdit = async name => {
     setEditKey(name);
-    console.log('nameREF>>::', nameRef);
-    nameRef.current.focus();
-    mobileRef.current.focus();
-    // try {
-    //   const res = await dispatch(
-    //     addUserProfile({...profileData, [name]: value}),
-    //   );
-    //   console.log('RES::', res);
-    //   res && Alert.alert('Edit Successfuly!');
-    // } catch (e) {
-    //   console.log('ERROR::', e);
-    // }
   };
   const isEditable = key => {
-    console.log('kEY::', key, 'editKEY', editKey);
     if (isSubmitted && key === editKey) {
       return true;
     } else if (!isSubmitted) {
@@ -112,31 +88,23 @@ const Home = () => {
   };
   return (
     <Box style={{backgroundColor: colors.white, flex: 1}}>
-      <Wrapper style={{flex: 0, backgroundColor: colors.white}} />
-      <Box style={{flex: 1}}>
-        <Form
-          OnPress={OnPress}
-          onChangeName={onChangeName}
-          onChangeAddress={onChangeAddress}
-          onChangeMobile={onChangeMobile}
-          onChangeEmail={onChangeEmail}
-          onChangePassword={onChangePassword}
-          name={name}
-          address={address}
-          email={email}
-          isSubmitted={isSubmitted}
-          password={password}
-          mobile={mobile}
-          isEdit={isEdit}
-          isEditable={isEditable}
-          onPressEdit={onPressEdit}
-          nameRef={nameRef}
-          addrRef={addrRef}
-          mobileRef={mobileRef}
-          emailRef={emailRef}
-          passwordRef={passwordRef}
-        />
-      </Box>
+      <Form
+        onPress={onPress}
+        onChangeName={onChangeName}
+        onChangeAddress={onChangeAddress}
+        onChangeMobile={onChangeMobile}
+        onChangeEmail={onChangeEmail}
+        onChangePassword={onChangePassword}
+        name={name}
+        address={address}
+        email={email}
+        isSubmitted={isSubmitted}
+        password={password}
+        mobile={mobile}
+        isEdit={isEdit}
+        isEditable={isEditable}
+        onPressEdit={onPressEdit}
+      />
     </Box>
   );
 };
