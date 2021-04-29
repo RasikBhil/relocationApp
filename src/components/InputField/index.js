@@ -13,6 +13,7 @@ const InputField = props => {
       value={value}
       placeholder={placeHolder}
       secureTextEntry={secureTextEntry}
+      {...props}
     />
     // </Box>
   );

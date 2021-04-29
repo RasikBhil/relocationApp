@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {StyleSheet, Image} from 'react-native';
 import {ms, s} from 'react-native-size-matters';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
@@ -23,11 +23,14 @@ const Form = props => {
     password,
     mobile,
     isEdit,
+    isEditable,
+    isSubmitted,
   } = props;
 
   return (
     <Box style={styles.container}>
       <InputBox
+        editable={isEditable('name')}
         label={'Name'}
         placeHolder={'Enter Name'}
         value={name}
@@ -38,6 +41,9 @@ const Form = props => {
       <Label style={styles.label}>Address:</Label>
       <Box style={styles.sectionStyle}>
         <GooglePlacesAutocomplete
+          textInputProps={{
+            editable: isEditable('addr'),
+          }}
           placeholder="Search Address"
           query={{
             key: API_KEY,
@@ -66,17 +72,18 @@ const Form = props => {
           }}
         />
         {isEdit && (
-          <TouchableOpacity onPress={onPressEdit}>
+          <TouchableOpacity onPress={() => onPressEdit('addr', address)}>
             <Image
               source={ic_edit}
               style={styles.imageStyle}
-              onPressEdit={() => onPressEdit('addr', address)}
+              // onPress={() => onPressEdit('addr', address)}
             />
           </TouchableOpacity>
         )}
       </Box>
       <InputBox
         label={'Mobile'}
+        editable={isEditable('mobile')}
         placeHolder={'Enter Mobile Number'}
         value={mobile}
         onChangeText={onChangeMobile}
@@ -85,6 +92,7 @@ const Form = props => {
       />
       <InputBox
         label={'Email'}
+        editable={isEditable('email')}
         placeHolder={'Enter Email'}
         value={email}
         onChangeText={onChangeEmail}
@@ -93,6 +101,7 @@ const Form = props => {
       />
       <InputBox
         label={'Password'}
+        editable={isEditable('password')}
         onChangeText={onChangePassword}
         placeHolder={'Enter Password'}
         value={password}
@@ -100,7 +109,7 @@ const Form = props => {
         isEdit={isEdit}
         onPressEdit={() => onPressEdit('password', password)}
       />
-      <Button title={'submit'} OnPress={OnPress} />
+      <Button title={isSubmitted ? 'save' : 'submit'} OnPress={OnPress} />
     </Box>
   );
 };
@@ -126,6 +135,7 @@ const InputBox = props => {
           value={value}
           style={{flex: 1}}
           secureTextEntry={secureTextEntry}
+          {...props}
         />
         {isEdit && (
           <TouchableOpacity onPress={onPressEdit}>

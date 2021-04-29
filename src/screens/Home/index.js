@@ -32,8 +32,10 @@ const Home = () => {
   const [password, setPassword] = useState(
     profileData?.password ? profileData?.password : '',
   );
-
+  // const [isEditable, setEditable] = useState(true);
+  const [editKey, setEditKey] = useState('');
   const [isEdit, setIsEdit] = useState(false);
+  const [isSubmitted, setSubmitted] = useState(false);
   useEffect(() => {
     if (isFocused) {
       setName('');
@@ -59,6 +61,8 @@ const Home = () => {
         password: password,
       };
       const res = await dispatch(addUserProfile(params));
+      // setEditable(false);
+      setSubmitted(true);
       res && setIsEdit(true);
     } catch (e) {
       console.log('ERROR::', e);
@@ -83,17 +87,26 @@ const Home = () => {
 
   const onPressEdit = async (name, value) => {
     console.log('EDIT::', name, 'value::', value);
-    try {
-      const res = await dispatch(
-        addUserProfile({...profileData, [name]: value}),
-      );
-      console.log('RES::', res);
-      res && Alert.alert('Edit Successfuly!');
-    } catch (e) {
-      console.log('ERROR::', e);
+    setEditKey(name);
+    // try {
+    //   const res = await dispatch(
+    //     addUserProfile({...profileData, [name]: value}),
+    //   );
+    //   console.log('RES::', res);
+    //   res && Alert.alert('Edit Successfuly!');
+    // } catch (e) {
+    //   console.log('ERROR::', e);
+    // }
+  };
+  const isEditable = key => {
+    if (isSubmitted && key === editKey) {
+      return true;
+    } else if (!isSubmitted) {
+      return true;
+    } else {
+      return false;
     }
   };
-
   return (
     <Box style={{backgroundColor: colors.white, flex: 1}}>
       <KeyboardAvoidingView
@@ -111,9 +124,11 @@ const Home = () => {
               name={name}
               address={address}
               email={email}
+              isSubmitted={isSubmitted}
               password={password}
               mobile={mobile}
               isEdit={isEdit}
+              isEditable={isEditable}
               onPressEdit={onPressEdit}
             />
           </Box>
