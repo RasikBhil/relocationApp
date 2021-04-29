@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Image} from 'react-native';
+import {StyleSheet, Image, TextInput} from 'react-native';
 import {ms, s} from 'react-native-size-matters';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {Box, Button, Label, InputField} from '../../../../components';
@@ -25,6 +25,11 @@ const Form = props => {
     isEdit,
     isEditable,
     isSubmitted,
+    nameRef,
+    addrRef,
+    mobileRef,
+    emailRef,
+    passwordRef,
   } = props;
 
   return (
@@ -38,12 +43,14 @@ const Form = props => {
           onChangeText={onChangeName}
           isEdit={isEdit}
           onPressEdit={() => onPressEdit('name', name)}
+          ref={nameRef}
         />
         <Label style={styles.label}>Address:</Label>
         <Box style={styles.sectionStyle}>
           <GooglePlacesAutocomplete
             textInputProps={{
               editable: isEditable('addr'),
+              ref: addrRef,
             }}
             placeholder="Search Address"
             query={{
@@ -87,6 +94,7 @@ const Form = props => {
           isEdit={isEdit}
           onPressEdit={() => onPressEdit('mobile', mobile)}
           keyboardType="numeric"
+          ref={mobileRef}
         />
         <InputBox
           label={'Email'}
@@ -96,6 +104,7 @@ const Form = props => {
           onChangeText={onChangeEmail}
           isEdit={isEdit}
           onPressEdit={() => onPressEdit('email', email)}
+          ref={emailRef}
         />
         <InputBox
           label={'Password'}
@@ -106,6 +115,7 @@ const Form = props => {
           secureTextEntry={true}
           isEdit={isEdit}
           onPressEdit={() => onPressEdit('password', password)}
+          ref={passwordRef}
         />
       </Box>
       <Button title={isSubmitted ? 'save' : 'submit'} OnPress={OnPress} />
@@ -122,7 +132,7 @@ const InputBox = props => {
     onChangeText,
     isEdit,
     onPressEdit,
-    ...rest
+    ref,
   } = props;
   return (
     <Box>
@@ -133,6 +143,7 @@ const InputBox = props => {
           placeHolder={placeHolder}
           value={value}
           style={{flex: 1}}
+          ref={ref}
           {...props}
         />
         {isEdit && (

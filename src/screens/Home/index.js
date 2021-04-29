@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {Alert} from 'react-native';
 import {useIsFocused} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -7,6 +7,11 @@ import {addUserProfile} from '../../store/actions';
 import Form from './widget/Form';
 import {colors} from '../../../theme';
 const Home = () => {
+  const nameRef = useRef(null);
+  const addrRef = useRef(null);
+  const mobileRef = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const profileData = useSelector(
@@ -28,7 +33,7 @@ const Home = () => {
   const [editKey, setEditKey] = useState('');
   const [isEdit, setIsEdit] = useState(false);
   const [isSubmitted, setSubmitted] = useState(false);
-
+  //
   useEffect(() => {
     setName('');
     setAddress('');
@@ -36,6 +41,8 @@ const Home = () => {
     setEmail('');
     setPassword('');
     setIsEdit(false);
+    setSubmitted(false);
+    setEditKey('');
   }, []);
 
   const OnPress = async () => {
@@ -60,6 +67,7 @@ const Home = () => {
     }
   };
   const onChangeName = name => {
+    console.log('REF::', nameRef);
     setName(name);
   };
   const onChangeAddress = addr => {
@@ -79,6 +87,9 @@ const Home = () => {
   const onPressEdit = async (name, value) => {
     console.log('EDIT::', name, 'value::', value);
     setEditKey(name);
+    console.log('nameREF>>::', nameRef);
+    nameRef.current.focus();
+    mobileRef.current.focus();
     // try {
     //   const res = await dispatch(
     //     addUserProfile({...profileData, [name]: value}),
@@ -94,7 +105,6 @@ const Home = () => {
     if (isSubmitted && key === editKey) {
       return true;
     } else if (!isSubmitted) {
-      console.log('inside else if');
       return true;
     } else {
       return false;
@@ -120,6 +130,11 @@ const Home = () => {
           isEdit={isEdit}
           isEditable={isEditable}
           onPressEdit={onPressEdit}
+          nameRef={nameRef}
+          addrRef={addrRef}
+          mobileRef={mobileRef}
+          emailRef={emailRef}
+          passwordRef={passwordRef}
         />
       </Box>
     </Box>
