@@ -1,8 +1,8 @@
 import React from 'react';
 import {SafeAreaView, View, StyleSheet} from 'react-native';
 
-const Wrapper = () => {
-  return <SafeAreaView style={styles} />;
+const Wrapper = ({style}) => {
+  return <SafeAreaView style={{...styles, ...style}} />;
 };
 // export default Wrapper;
 

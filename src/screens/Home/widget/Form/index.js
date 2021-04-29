@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import {StyleSheet, Image} from 'react-native';
 import {ms, s} from 'react-native-size-matters';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
@@ -29,86 +29,85 @@ const Form = props => {
 
   return (
     <Box style={styles.container}>
-      <InputBox
-        editable={isEditable('name')}
-        label={'Name'}
-        placeHolder={'Enter Name'}
-        value={name}
-        onChangeText={onChangeName}
-        isEdit={isEdit}
-        onPressEdit={() => onPressEdit('name', name)}
-      />
-      <Label style={styles.label}>Address:</Label>
-      <Box style={styles.sectionStyle}>
-        <GooglePlacesAutocomplete
-          textInputProps={{
-            editable: isEditable('addr'),
-          }}
-          placeholder="Search Address"
-          query={{
-            key: API_KEY,
-            language: 'en',
-          }}
-          keyboardShouldPersistTaps={'always'}
-          onPress={(data, details = null) => onChangeAddress(data)}
-          onFail={error => console.error(error)}
-          requestUrl={{
-            url:
-              'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api',
-            useOnPlatform: 'web',
-          }} // this in only required for use on the web. See https://git.io/JflFv more for details.
-          styles={{
-            textInput: {
-              height: ms(40),
-              // marginTop: ms(10),
-              // borderBottomWidth: ms(0.5),
-              // borderBottomColor: colors.gray,
-              backgroundColor: colors.white,
-              // borderStyle: 'solid',
-              borderRadius: 0,
-              paddingHorizontal: ms(1),
-              // marginHorizontal: ms(10),
-            },
-          }}
+      <Box>
+        <InputBox
+          editable={isEditable('name')}
+          label={'Name'}
+          placeHolder={'Enter Name'}
+          value={name}
+          onChangeText={onChangeName}
+          isEdit={isEdit}
+          onPressEdit={() => onPressEdit('name', name)}
         />
-        {isEdit && (
-          <TouchableOpacity onPress={() => onPressEdit('addr', address)}>
-            <Image
-              source={ic_edit}
-              style={styles.imageStyle}
-              // onPress={() => onPressEdit('addr', address)}
-            />
-          </TouchableOpacity>
-        )}
+        <Label style={styles.label}>Address:</Label>
+        <Box style={styles.sectionStyle}>
+          <GooglePlacesAutocomplete
+            textInputProps={{
+              editable: isEditable('addr'),
+            }}
+            placeholder="Search Address"
+            query={{
+              key: API_KEY,
+              language: 'en',
+            }}
+            keyboardShouldPersistTaps={'always'}
+            onPress={(data, details = null) => onChangeAddress(data)}
+            onFail={error => console.error(error)}
+            requestUrl={{
+              url:
+                'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api',
+              useOnPlatform: 'web',
+            }} // this in only required for use on the web. See https://git.io/JflFv more for details.
+            styles={{
+              textInput: {
+                height: 30,
+                fontSize: 15,
+                // marginTop: ms(10),
+                // borderBottomWidth: ms(0.5),
+                // borderBottomColor: colors.gray,
+                backgroundColor: colors.white,
+                // borderStyle: 'solid',
+                borderRadius: 0,
+                paddingHorizontal: ms(1),
+              },
+            }}
+          />
+          {isEdit && (
+            <TouchableOpacity onPress={() => onPressEdit('addr', address)}>
+              <Image source={ic_edit} style={styles.imageStyle} />
+            </TouchableOpacity>
+          )}
+        </Box>
+        <InputBox
+          label={'Mobile'}
+          editable={isEditable('mobile')}
+          placeHolder={'Enter Mobile Number'}
+          value={mobile}
+          onChangeText={onChangeMobile}
+          isEdit={isEdit}
+          onPressEdit={() => onPressEdit('mobile', mobile)}
+          keyboardType="numeric"
+        />
+        <InputBox
+          label={'Email'}
+          editable={isEditable('email')}
+          placeHolder={'Enter Email'}
+          value={email}
+          onChangeText={onChangeEmail}
+          isEdit={isEdit}
+          onPressEdit={() => onPressEdit('email', email)}
+        />
+        <InputBox
+          label={'Password'}
+          editable={isEditable('password')}
+          onChangeText={onChangePassword}
+          placeHolder={'Enter Password'}
+          value={password}
+          secureTextEntry={true}
+          isEdit={isEdit}
+          onPressEdit={() => onPressEdit('password', password)}
+        />
       </Box>
-      <InputBox
-        label={'Mobile'}
-        editable={isEditable('mobile')}
-        placeHolder={'Enter Mobile Number'}
-        value={mobile}
-        onChangeText={onChangeMobile}
-        isEdit={isEdit}
-        onPressEdit={() => onPressEdit('mobile', mobile)}
-      />
-      <InputBox
-        label={'Email'}
-        editable={isEditable('email')}
-        placeHolder={'Enter Email'}
-        value={email}
-        onChangeText={onChangeEmail}
-        isEdit={isEdit}
-        onPressEdit={() => onPressEdit('email', email)}
-      />
-      <InputBox
-        label={'Password'}
-        editable={isEditable('password')}
-        onChangeText={onChangePassword}
-        placeHolder={'Enter Password'}
-        value={password}
-        secureTextEntry={true}
-        isEdit={isEdit}
-        onPressEdit={() => onPressEdit('password', password)}
-      />
       <Button title={isSubmitted ? 'save' : 'submit'} OnPress={OnPress} />
     </Box>
   );
@@ -119,11 +118,11 @@ const InputBox = props => {
   const {
     label,
     placeHolder,
-    secureTextEntry,
     value,
     onChangeText,
     isEdit,
     onPressEdit,
+    ...rest
   } = props;
   return (
     <Box>
@@ -134,7 +133,6 @@ const InputBox = props => {
           placeHolder={placeHolder}
           value={value}
           style={{flex: 1}}
-          secureTextEntry={secureTextEntry}
           {...props}
         />
         {isEdit && (
@@ -165,13 +163,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     // height: ms(40),
     marginVertical: ms(10),
-    marginHorizontal: ms(10),
+    marginHorizontal: ms(9),
     borderBottomWidth: ms(0.5),
     borderBottomColor: colors.gray,
   },
   imageStyle: {
-    // padding: ms(10),
-    // margin: ms(5),
     height: ms(25),
     width: ms(25),
     resizeMode: 'contain',

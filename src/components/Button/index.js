@@ -22,8 +22,12 @@ const styles = StyleSheet.create({
     padding: ms(5),
     width: '50%',
     alignSelf: 'center',
-    elevation: 3,
+    elevation: 5,
     marginVertical: ms(10),
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
   },
   text: {
     fontSize: s(18),

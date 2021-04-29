@@ -1,15 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {
-  ScrollView,
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  Keyboard,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import {Alert} from 'react-native';
 import {useIsFocused} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Box} from '../../components';
+import {Box, Wrapper} from '../../components';
 import {addUserProfile} from '../../store/actions';
 import Form from './widget/Form';
 import {colors} from '../../../theme';
@@ -32,20 +25,18 @@ const Home = () => {
   const [password, setPassword] = useState(
     profileData?.password ? profileData?.password : '',
   );
-  // const [isEditable, setEditable] = useState(true);
   const [editKey, setEditKey] = useState('');
   const [isEdit, setIsEdit] = useState(false);
   const [isSubmitted, setSubmitted] = useState(false);
+
   useEffect(() => {
-    if (isFocused) {
-      setName('');
-      setAddress('');
-      setMobile('');
-      setEmail('');
-      setPassword('');
-      setIsEdit(false);
-    }
-  }, [isFocused]);
+    setName('');
+    setAddress('');
+    setMobile('');
+    setEmail('');
+    setPassword('');
+    setIsEdit(false);
+  }, []);
 
   const OnPress = async () => {
     if (!(name && address && mobile && email && password)) {
@@ -61,8 +52,8 @@ const Home = () => {
         password: password,
       };
       const res = await dispatch(addUserProfile(params));
-      // setEditable(false);
       setSubmitted(true);
+      setEditKey(false);
       res && setIsEdit(true);
     } catch (e) {
       console.log('ERROR::', e);
@@ -99,9 +90,11 @@ const Home = () => {
     // }
   };
   const isEditable = key => {
+    console.log('kEY::', key, 'editKEY', editKey);
     if (isSubmitted && key === editKey) {
       return true;
     } else if (!isSubmitted) {
+      console.log('inside else if');
       return true;
     } else {
       return false;
@@ -109,31 +102,26 @@ const Home = () => {
   };
   return (
     <Box style={{backgroundColor: colors.white, flex: 1}}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: Platform.OS === 'ios' ? 1 : 1}}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <Box style={{flex: 1}}>
-            <Form
-              OnPress={OnPress}
-              onChangeName={onChangeName}
-              onChangeAddress={onChangeAddress}
-              onChangeMobile={onChangeMobile}
-              onChangeEmail={onChangeEmail}
-              onChangePassword={onChangePassword}
-              name={name}
-              address={address}
-              email={email}
-              isSubmitted={isSubmitted}
-              password={password}
-              mobile={mobile}
-              isEdit={isEdit}
-              isEditable={isEditable}
-              onPressEdit={onPressEdit}
-            />
-          </Box>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+      <Wrapper style={{flex: 0, backgroundColor: colors.white}} />
+      <Box style={{flex: 1}}>
+        <Form
+          OnPress={OnPress}
+          onChangeName={onChangeName}
+          onChangeAddress={onChangeAddress}
+          onChangeMobile={onChangeMobile}
+          onChangeEmail={onChangeEmail}
+          onChangePassword={onChangePassword}
+          name={name}
+          address={address}
+          email={email}
+          isSubmitted={isSubmitted}
+          password={password}
+          mobile={mobile}
+          isEdit={isEdit}
+          isEditable={isEditable}
+          onPressEdit={onPressEdit}
+        />
+      </Box>
     </Box>
   );
 };
