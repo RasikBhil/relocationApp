@@ -5,6 +5,7 @@ import {Box} from '../../components';
 import {addUserProfile} from '../../store/actions';
 import Form from './widget/Form';
 import {colors} from '../../../theme';
+
 const Home = () => {
   const dispatch = useDispatch();
   const profileData = useSelector(
@@ -37,11 +38,19 @@ const Home = () => {
     setSubmitted(false);
     setEditKey('');
   }, []);
+  const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   const onPress = async () => {
-    if (!(name && address && mobile && email && password)) {
-      Alert.alert('Require All field!');
-      return;
+    if ((name && address && mobile && email && password) !== '') {
+      if (emailRegex.test(email) === false) {
+        Alert.alert('Enter Valid email address!');
+        return false;
+      }
+    } else if (!(name && address && mobile && email && password)) {
+      Alert.alert('Required all field!!!');
+      return false;
+    } else {
+      return true;
     }
     try {
       const params = {

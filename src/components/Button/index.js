@@ -4,10 +4,10 @@ import {ms, s} from 'react-native-size-matters';
 import Label from '../Text';
 import {colors} from '../../../theme';
 const Button = props => {
-  const {title, OnPress} = props;
+  const {title, onPress} = props;
   return (
     <View>
-      <TouchableOpacity onPress={OnPress} style={styles.button}>
+      <TouchableOpacity onPress={onPress} style={styles.button}>
         <Label style={styles.text}>{title}</Label>
       </TouchableOpacity>
     </View>
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     marginVertical: ms(10),
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.8,
     shadowRadius: 2,
   },

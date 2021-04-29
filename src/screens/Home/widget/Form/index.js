@@ -4,8 +4,10 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
+  TouchableWithoutFeedback,
   TouchableOpacity,
+  Keyboard,
+  ScrollView,
 } from 'react-native';
 import {ms, s} from 'react-native-size-matters';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
@@ -33,101 +35,120 @@ const Form = props => {
   } = props;
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'height' : 'null'}
-      style={{flex: 1}}
-      keyboardVerticalOffset={Platform.select({ios: ms(100)})}>
-      <ScrollView>
-        <Box style={styles.container}>
-          <Box>
-            <InputBox
-              editable={isEditable('name')}
-              label={'Name'}
-              placeHolder={'Enter Name'}
-              value={name}
-              onChangeText={onChangeName}
-              isEdit={isEdit}
-              onPressEdit={() => onPressEdit('name')}
-            />
-            <Label style={styles.label}>Address:</Label>
-            <Box style={styles.sectionStyle}>
-              <GooglePlacesAutocomplete
-                textInputProps={{
-                  editable: isEditable('addr'),
-                }}
-                placeholder="Search Address"
-                query={{
-                  key: API_KEY,
-                  language: 'en',
-                }}
-                keyboardShouldPersistTaps={'always'}
-                onPress={(data, details = null) => onChangeAddress(data)}
-                onFail={error => console.error(error)}
-                requestUrl={{
-                  url:
-                    'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api',
-                  useOnPlatform: 'web',
-                }} // this in only required for use on the web. See https://git.io/JflFv more for details.
-                styles={{
-                  textInput: {
-                    height: 30,
-                    fontSize: ms(15),
-                    backgroundColor:
-                      isEdit && isEditable('addr')
-                        ? colors.lightBlue
-                        : colors.white,
-                    borderRadius: 0,
-                    paddingHorizontal: ms(1),
-                  },
-                }}
-              />
-              {isEdit && (
-                <TouchableOpacity onPress={() => onPressEdit('addr')}>
-                  <Image
-                    source={ic_edit}
-                    style={
-                      isEditable('addr')
-                        ? [styles.imageStyle, {backgroundColor: '#F0F8FF'}]
-                        : styles.imageStyle
-                    }
+    <Box style={styles.box}>
+      <TouchableWithoutFeedback
+        containerStyle={styles.box}
+        onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'height' : 'null'}
+          style={styles.box}
+          keyboardVerticalOffset={Platform.select({
+            ios: ms(100),
+          })}>
+          <ScrollView keyboardShouldPersistTaps={'handled'}>
+            <Box style={styles.container}>
+              <Box>
+                <InputBox
+                  editable={isEditable('name')}
+                  label={'Name'}
+                  placeHolder={'Enter Name'}
+                  value={name}
+                  onChangeText={onChangeName}
+                  isEdit={isEdit}
+                  onPressEdit={() => onPressEdit('name')}
+                />
+                <Label style={styles.label}>Address:</Label>
+                <Box style={styles.sectionStyle}>
+                  <GooglePlacesAutocomplete
+                    textInputProps={{
+                      editable: isEditable('addr'),
+                    }}
+                    placeholder="Search Address"
+                    query={{
+                      key: API_KEY,
+                      language: 'en',
+                    }}
+                    keyboardShouldPersistTaps={'always'}
+                    onPress={(data, details = null) => onChangeAddress(data)}
+                    onFail={error => console.error(error)}
+                    requestUrl={{
+                      url:
+                        'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api',
+                      useOnPlatform: 'web',
+                    }} // this in only required for use on the web. See https://git.io/JflFv more for details.
+                    styles={{
+                      textInput: {
+                        height: ms(30),
+                        fontSize: ms(15),
+                        backgroundColor:
+                          isEdit && isEditable('addr')
+                            ? colors.lightBlue
+                            : colors.white,
+                        borderRadius: 0,
+                        paddingRight: ms(10),
+                        paddingLeft: ms(1),
+                      },
+                    }}
                   />
-                </TouchableOpacity>
-              )}
+                  {isEdit && (
+                    <TouchableOpacity onPress={() => onPressEdit('addr')}>
+                      <Image
+                        source={ic_edit}
+                        style={
+                          // isEditable('addr')
+                          //   ? [
+                          //       styles.imageStyle,
+                          //       {
+                          //         backgroundColor: colors.lightBlue,
+                          //         height: ms(36),
+                          //       },
+                          //     ]
+                          //   : [styles.imageStyle, {height: ms(36)}]
+                          styles.imageStyle
+                        }
+                      />
+                    </TouchableOpacity>
+                  )}
+                </Box>
+                <InputBox
+                  label={'Mobile'}
+                  editable={isEditable('mobile')}
+                  placeHolder={'Enter Mobile Number'}
+                  value={mobile}
+                  onChangeText={onChangeMobile}
+                  isEdit={isEdit}
+                  onPressEdit={() => onPressEdit('mobile')}
+                  keyboardType="numeric"
+                />
+                <InputBox
+                  label={'Email'}
+                  editable={isEditable('email')}
+                  placeHolder={'Enter Email'}
+                  value={email}
+                  onChangeText={onChangeEmail}
+                  isEdit={isEdit}
+                  onPressEdit={() => onPressEdit('email')}
+                />
+                <InputBox
+                  label={'Password'}
+                  editable={isEditable('password')}
+                  onChangeText={onChangePassword}
+                  placeHolder={'Enter Password'}
+                  value={password}
+                  secureTextEntry={true}
+                  isEdit={isEdit}
+                  onPressEdit={() => onPressEdit('password')}
+                />
+              </Box>
+              <Button
+                title={isSubmitted ? 'save' : 'submit'}
+                onPress={onPress}
+              />
             </Box>
-            <InputBox
-              label={'Mobile'}
-              editable={isEditable('mobile')}
-              placeHolder={'Enter Mobile Number'}
-              value={mobile}
-              onChangeText={onChangeMobile}
-              isEdit={isEdit}
-              onPressEdit={() => onPressEdit('mobile')}
-              keyboardType="numeric"
-            />
-            <InputBox
-              label={'Email'}
-              editable={isEditable('email')}
-              placeHolder={'Enter Email'}
-              value={email}
-              onChangeText={onChangeEmail}
-              isEdit={isEdit}
-              onPressEdit={() => onPressEdit('email')}
-            />
-            <InputBox
-              label={'Password'}
-              editable={isEditable('password')}
-              onChangeText={onChangePassword}
-              placeHolder={'Enter Password'}
-              value={password}
-              secureTextEntry={true}
-              isEdit={isEdit}
-              onPressEdit={() => onPressEdit('password')}
-            />
-          </Box>
-          <Button title={isSubmitted ? 'save' : 'submit'} OnPress={onPress} />
-        </Box>
-      </ScrollView>
-    </KeyboardAvoidingView>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
+    </Box>
   );
 };
 export default Form;
@@ -147,15 +168,21 @@ const InputBox = props => {
       <Label style={styles.label}>{label}</Label>
       <Box
         style={
-          isEdit && editable
-            ? {...styles.sectionStyle, backgroundColor: colors.lightBlue}
-            : styles.sectionStyle
+          // isEdit && editable
+          //   ? {...styles.sectionStyle, backgroundColor: colors.lightBlue}
+          //   :
+          styles.sectionStyle
         }>
         <InputField
           onChangeText={onChangeText}
           placeHolder={placeHolder}
           value={value}
-          style={{flex: 1}}
+          style={{
+            flex: 1,
+            backgroundColor:
+              isEdit && editable ? colors.lightBlue : colors.white,
+            height: ms(40),
+          }}
           {...props}
         />
         {isEdit && (
@@ -168,6 +195,9 @@ const InputBox = props => {
   );
 };
 const styles = StyleSheet.create({
+  box: {
+    flex: 1,
+  },
   container: {
     width: '90%',
     alignSelf: 'center',
@@ -184,7 +214,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.white,
+    // backgroundColor: colors.white,
     paddingVertical: Platform.OS === 'ios' ? ms(5) : ms(0),
     marginVertical: ms(10),
     marginHorizontal: ms(9),
