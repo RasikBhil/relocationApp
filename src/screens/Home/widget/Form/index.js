@@ -204,9 +204,9 @@ const styles = StyleSheet.create({
   },
   googleInput: {
     height: ms(30),
-    fontSize: ms(15),
+    fontSize: ms(13),
     borderRadius: 0,
     paddingRight: ms(10),
-    paddingLeft: ms(1),
+    paddingLeft: ms(2),
   },
 });

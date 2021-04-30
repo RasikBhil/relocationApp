@@ -1,7 +1,4 @@
 import * as types from '../types';
-import {combineReducers} from 'redux';
-import {persistReducer} from 'redux-persist';
-import AsyncStorage from '@react-native-community/async-storage';
 const initialState = {
   userProfileData: [],
 };
@@ -16,13 +13,4 @@ const reducers = (state = initialState, action) => {
   }
 };
 
-const persistConfig = {
-  key: 'root',
-  storage: AsyncStorage,
-};
-
-const rootReducers = combineReducers({
-  app: persistReducer(persistConfig, reducers),
-});
-
-export default rootReducers;
+export default reducers;

@@ -17,6 +17,6 @@ const InputField = props => {
 export default InputField;
 const styles = StyleSheet.create({
   input: {
-    fontSize: ms(15),
+    fontSize: ms(13),
   },
 });

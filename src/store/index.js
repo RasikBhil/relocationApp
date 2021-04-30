@@ -1,8 +1,6 @@
-import {createStore, applyMiddleware} from 'redux';
+import {createStore, combineReducers, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
-import logger from 'redux-logger';
-import {persistStore} from 'redux-persist';
-import rootReducers from './reducers';
+import app from './reducers';
 import api from '../utils/api';
 import {createPromise} from 'redux-promise-middleware';
 
@@ -19,14 +17,12 @@ const reduxPromise = createPromise({
     PromiseStatus.ERROR,
   ],
 });
-export const store = createStore(
-  rootReducers,
-  applyMiddleware(
-    thunk.withExtraArgument({api: {...api}}),
-    logger,
-    reduxPromise,
-  ),
+
+const reducers = combineReducers({app});
+
+const store = createStore(
+  reducers,
+  applyMiddleware(thunk.withExtraArgument({api: {...api}}), reduxPromise),
 );
 
-export const persistor = persistStore(store);
-export default {store, persistor};
+export default store;
