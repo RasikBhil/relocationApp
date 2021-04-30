@@ -78,15 +78,11 @@ const Form = props => {
                     }} // this in only required for use on the web. See https://git.io/JflFv more for details.
                     styles={{
                       textInput: {
-                        height: ms(30),
-                        fontSize: ms(15),
+                        ...styles.googleInput,
                         backgroundColor:
                           isEdit && isEditable('addr')
                             ? colors.lightBlue
                             : colors.white,
-                        borderRadius: 0,
-                        paddingRight: ms(10),
-                        paddingLeft: ms(1),
                       },
                     }}
                   />
@@ -205,5 +201,12 @@ const styles = StyleSheet.create({
     width: ms(25),
     resizeMode: 'contain',
     alignItems: 'center',
+  },
+  googleInput: {
+    height: ms(30),
+    fontSize: ms(15),
+    borderRadius: 0,
+    paddingRight: ms(10),
+    paddingLeft: ms(1),
   },
 });
