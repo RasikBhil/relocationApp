@@ -11,33 +11,23 @@ const Home = () => {
   const profileData = useSelector(
     ({app: {userProfileData}}) => userProfileData,
   );
-  const [name, setName] = useState(profileData?.name ? profileData?.name : '');
-  const [address, setAddress] = useState(
-    profileData?.addr ? profileData?.addr : '',
-  );
-  const [mobile, setMobile] = useState(
-    profileData?.mobile ? profileData?.mobile : '',
-  );
-  const [email, setEmail] = useState(
-    profileData?.email ? profileData?.email : '',
-  );
-  const [password, setPassword] = useState(
-    profileData?.password ? profileData?.password : '',
-  );
+  const [name, setName] = useState('');
+  const [address, setAddress] = useState('');
+  const [mobile, setMobile] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [editKey, setEditKey] = useState('');
   const [isEdit, setIsEdit] = useState(false);
   const [isSubmitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    setName('');
-    setAddress('');
-    setMobile('');
-    setEmail('');
-    setPassword('');
-    setIsEdit(false);
-    setSubmitted(false);
-    setEditKey('');
-  }, []);
+    setName(profileData?.name ? profileData?.name : '');
+    setAddress(profileData?.addr ? profileData?.addr : '');
+    setMobile(profileData?.mobile ? profileData?.mobile : '');
+    setEmail(profileData?.email ? profileData?.email : '');
+    setPassword(profileData?.password ? profileData?.password : '');
+  }, [profileData]);
+
   const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   const onPress = async () => {

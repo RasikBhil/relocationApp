@@ -92,21 +92,7 @@ const Form = props => {
                   />
                   {isEdit && (
                     <TouchableOpacity onPress={() => onPressEdit('addr')}>
-                      <Image
-                        source={ic_edit}
-                        style={
-                          // isEditable('addr')
-                          //   ? [
-                          //       styles.imageStyle,
-                          //       {
-                          //         backgroundColor: colors.lightBlue,
-                          //         height: ms(36),
-                          //       },
-                          //     ]
-                          //   : [styles.imageStyle, {height: ms(36)}]
-                          styles.imageStyle
-                        }
-                      />
+                      <Image source={ic_edit} style={styles.imageStyle} />
                     </TouchableOpacity>
                   )}
                 </Box>
@@ -166,13 +152,7 @@ const InputBox = props => {
   return (
     <Box>
       <Label style={styles.label}>{label}</Label>
-      <Box
-        style={
-          // isEdit && editable
-          //   ? {...styles.sectionStyle, backgroundColor: colors.lightBlue}
-          //   :
-          styles.sectionStyle
-        }>
+      <Box style={styles.sectionStyle}>
         <InputField
           onChangeText={onChangeText}
           placeHolder={placeHolder}
@@ -214,7 +194,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: colors.white,
     paddingVertical: Platform.OS === 'ios' ? ms(5) : ms(0),
     marginVertical: ms(10),
     marginHorizontal: ms(9),
